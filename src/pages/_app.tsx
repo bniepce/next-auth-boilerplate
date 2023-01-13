@@ -4,7 +4,7 @@ import "../styles/globals.css";
 
 function App({ Component, pageProps }:AppProps) {
   return (
-    <SessionProvider>
+    <SessionProvider session={pageProps.session}>
       <Component {...pageProps} />
     </SessionProvider>
   );

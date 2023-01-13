@@ -33,17 +33,25 @@ export default NextAuth({
         })
     ],
     callbacks: {
-        jwt: ({ token, user }) => {
-          if (user) {
-            token.user = user
-          }
-          return token;
-        },
-        session: ({ session, token }) => {
-          if (token) {
-            session.user = token.user;
-          }
-          return session;
-        },
+      jwt: async({ token, user }) => {
+        if (user) {
+          token.user = user
+        }
+        return token;
       },
+      session: async ({ session, token }) => {
+        if (token) {
+          session.user = token.user;
+        }
+        return session;
+      },
+      redirect: async ({ url }) => {
+        if (url.includes("/auth/signin")) return "/";
+        if (!url.includes("/")) return "/auth/signin";
+        return url;
+      },
+    },
+    pages:{
+      signIn: '/auth/signin',
+    }
 });
