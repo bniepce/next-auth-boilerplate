@@ -2,10 +2,15 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from 'next/dist/client/router';
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  const { data: session } = useSession();
+  const router = useRouter();
+
   return (
     <>
       <Head>
@@ -15,6 +20,18 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
+        {session ? (
+            <button onClick={() => signOut()}>Log out</button>
+          ) : (
+            <button
+              onClick={() => {
+                router.push("/api/auth/signin");
+              }}
+            >
+              Sign in
+            </button>
+        )}
+
         <div className={styles.description}>
           <p>
             Get started by editing&nbsp;
